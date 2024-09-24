@@ -9,12 +9,15 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
+
     @Override
     public ProductResponseDto createProduct(ProductRequestDto prqdto) {
 
@@ -22,16 +25,26 @@ public class ProductServiceImpl implements ProductService{
           String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
           prqdto.setEntryDate(currentDate);
       }
-      Product product = convertToEntity(prqdto);
+        Product product = convertToEntity(prqdto);
+        Product savedProduct = productRepository.save(product);
+        ProductResponseDto responseDto = convertToReponseDto(savedProduct);
+        return responseDto;
+    }
 
-      Product savedProduct = productRepository.save(product);
+    @Override
+    public List<ProductResponseDto> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        List<ProductResponseDto> productResponseDtos = new ArrayList<>();
 
-        return convertToReponseDto(savedProduct);
+        for(Product product: products){
+            ProductResponseDto productResponseDto = convertToReponseDto(product);
+            productResponseDtos.add(productResponseDto);
+        }
+        return productResponseDtos;
     }
 
 
-
-    private Product convertToEntity(ProductRequestDto prodRqDto){
+    private Product convertToEntity(ProductRequestDto prodRqDto) {
         Product product = new Product();
         product.setName(prodRqDto.getName());
         product.setPrice(prodRqDto.getPrice());
@@ -40,7 +53,7 @@ public class ProductServiceImpl implements ProductService{
         return product;
     }
 
-    private ProductResponseDto convertToReponseDto(Product product){
+    private ProductResponseDto convertToReponseDto(Product product) {
         ProductResponseDto productResponseDto = new ProductResponseDto();
         productResponseDto.setId(product.getId());
         productResponseDto.setName(product.getName());

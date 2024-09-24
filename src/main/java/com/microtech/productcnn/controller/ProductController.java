@@ -6,10 +6,9 @@ import com.microtech.productcnn.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -20,6 +19,13 @@ ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponseDto> addProducts(@RequestBody ProductRequestDto prdto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(prdto));
+        ProductResponseDto productResponseDto = productService.createProduct(prdto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productResponseDto);
+    }
+
+    @GetMapping("/allProducts")
+    public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
+        List<ProductResponseDto> productResponseDtos = productService.getAllProducts();
+        return ResponseEntity.ok(productResponseDtos);
     }
 }
