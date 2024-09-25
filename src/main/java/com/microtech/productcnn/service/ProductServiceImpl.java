@@ -25,6 +25,9 @@ public class ProductServiceImpl implements ProductService {
           String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
           prqdto.setEntryDate(currentDate);
       }
+
+
+
         Product product = convertToEntity(prqdto);
         Product savedProduct = productRepository.save(product);
         ProductResponseDto responseDto = convertToReponseDto(savedProduct);
@@ -33,14 +36,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponseDto> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        List<ProductResponseDto> productResponseDtos = new ArrayList<>();
 
-        for(Product product: products){
-            ProductResponseDto productResponseDto = convertToReponseDto(product);
-            productResponseDtos.add(productResponseDto);
-        }
-        return productResponseDtos;
+       List<Product> products = productRepository.findAll();
+
+//       List<ProductResponseDto> productResponseDtos = new ArrayList<>();
+//
+//       for(Product product:products){
+//        ProductResponseDto productResponseDto = convertToReponseDto(product);
+//        productResponseDtos.add(productResponseDto);
+//       }
+        return products.stream().map(this::convertToReponseDto).toList();
     }
 
 
