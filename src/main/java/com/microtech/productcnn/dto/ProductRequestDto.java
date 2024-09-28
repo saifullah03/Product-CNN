@@ -12,4 +12,5 @@ public class ProductRequestDto {
     private double price;
     private String description;
     private String entryDate;
+
 }

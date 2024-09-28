@@ -8,13 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity // Create table in database
+@Data // Al fields setter and getter methods
+@NoArgsConstructor // Create no argument constructor
+@AllArgsConstructor // Create all arguments constructor
 public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // unique cloumn - unique value
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Create a unique value
     private Long id;
     private String name;
     private double price;

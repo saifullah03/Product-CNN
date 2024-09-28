@@ -11,6 +11,8 @@ public interface ProductService {
 
     List<ProductResponseDto> getAllProducts();
 
+    ProductResponseDto getProductById(Long id);
+
 
     //  String getString(int a);
 }

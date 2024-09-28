@@ -17,6 +17,7 @@ ProductController {
     @Autowired
     private ProductService productService;
 
+
     @PostMapping
     public ResponseEntity<ProductResponseDto> addProducts(@RequestBody ProductRequestDto prdto) {
         ProductResponseDto productResponseDto = productService.createProduct(prdto);
@@ -27,6 +28,15 @@ ProductController {
     public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
         List<ProductResponseDto> productResponseDto = productService.getAllProducts();
         return ResponseEntity.ok(productResponseDto);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProductById(@PathVariable Long id){
+
+        try {
+            return ResponseEntity.ok(productService.getProductById(id));
+        } catch (Exception e) {
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
 }

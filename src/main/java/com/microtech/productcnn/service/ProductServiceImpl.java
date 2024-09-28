@@ -48,6 +48,13 @@ public class ProductServiceImpl implements ProductService {
         return products.stream().map(this::convertToReponseDto).toList();
     }
 
+    @Override
+    public ProductResponseDto getProductById(Long id) {
+       Product product =  productRepository.findById(id).orElseThrow(()->new RuntimeException("Product not found"));
+
+         return convertToReponseDto(product);
+    }
+
 
     private Product convertToEntity(ProductRequestDto prodRqDto) {
         Product product = new Product();
