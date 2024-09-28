@@ -19,24 +19,34 @@ ProductController {
 
 
     @PostMapping
-    public ResponseEntity<ProductResponseDto> addProducts(@RequestBody ProductRequestDto prdto) {
-        ProductResponseDto productResponseDto = productService.createProduct(prdto);
+    public ResponseEntity<ProductResponseDto> addProducts(@RequestBody ProductRequestDto productRequestDto) {
+        ProductResponseDto productResponseDto = productService.createProduct(productRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(productResponseDto);
     }
-
-    @GetMapping("/getall")
-    public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
-        List<ProductResponseDto> productResponseDto = productService.getAllProducts();
-        return ResponseEntity.ok(productResponseDto);
-    }
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable Long id){
-
-        try {
-            return ResponseEntity.ok(productService.getProductById(id));
-        } catch (Exception e) {
-           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    public ResponseEntity<ProductResponseDto>getProductById(@PathVariable Long id){
+       ProductResponseDto productResponseDto = productService.getProductById(id);
+       return ResponseEntity.ok(productResponseDto);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ProductResponseDto>> getAllProducts(){
+        List<ProductResponseDto> productResponseDtos = productService.getAllProducts();
+        return ResponseEntity.ok(productResponseDtos);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDto productRequestDto){
+        ProductResponseDto updateProduct = productService.updateProduct(id,productRequestDto);
+        return ResponseEntity.ok(updateProduct);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletProduct(@PathVariable Long id){
+        productService.deletProduct(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
 
 }
